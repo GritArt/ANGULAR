@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Currency</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body ng-app="myApp" ng-controller="exchangesCtrl">
+    <!-- ng-app -->
+
+    <header>
+        <div class="wrapper container">
+            <nav class="navbar navbar-expand-lg row">
+                <a class="navbar-brand col-xs-2" href="index.html">
+                    
+                </a>
+
+                <nav class="two">
+                    <ul>
+                        <li><a href="index.html"><i class="fa fa-home fa-fw"></i>Main</a></li>
+                        <li><a href="aboutUs.html">About Us</a></li>
+                        <li><a href="exchanges.html">Currency</a></li>
+                        <li><a href="contacts.html">Contacts</a></li>
+                        <li ng-show="isSignIn == false">
+                            <button id="myBtn">Sign in</button>
+                        </li>
+                        <li ng-show="isSignIn == true">
+                            <button class="btn-success">Hi, {{login | uppercase}}</button>
+                        </li>
+                        <li ng-show="isSignIn == true">
+                            <button class="btn-danger" ng-click="isSignIn = false">Exit</button>
+                        </li>
+                    </ul>
+                </nav>
+
+            </nav>
+        </div>
+    </header>
+
+
+
+    <div class="container" ng-init="orderByPrice=true" style="background-color: #33aa4d;">
+                         <!-- ng-init -->
+
+        <h1 class="text-center text-uppercase font-weight-bold">ВАЛЮТЫ</h1>
+        <button id="convert">Конвертер</button>
+
+        <h3>Filters:</h3>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Search</span>
+            </div>
+            <input class="form-control" type="text" ng-model="search">
+        </div> <br>
+        
+        <button class="btn btn-light" ng-click="orderByMe('title')">Sort by name</button>
+
+        
+        
+
+        <div class="row">
+            <div ng-repeat="item in exchanges | filter : search | orderBy : myOrderBy : myReverseBy | filter : myFilter">
+                                                <!-- filter -->
+                <div class="card" style="width:250px; padding-top: 20px; margin: 10px;">
+                    <img class="card-img-top" src="{{item.image}}" alt="Card image" style="width:100%">
+                    <div class="card-body">
+
+                        <input ng-disabled="editing == false" class="form-control btn-editing" type="text" ng-model="item.title">
+                        <!-- ng-disabled -->
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text btn-editing">MDL</span>
+                            </div>
+                            <input ng-disabled="editing == false" class="form-control btn-editing" type="number" ng-model="item.price">
+                            <!-- ng-disabled -->
+                        </div>
+
+                        <a href="#" class="btn btn-info btn-block">About</a>
+
+                        <a ng-click="editing = !editing" ng-show="isSignIn == true && editing == false" href="#" class="btn btn-warning btn-block"> Edit</a>
+
+                        <a ng-click="editing = !editing" ng-show="isSignIn == true && editing == true" href="#" class="btn btn-success btn-block"> Save</a>
+                        <a ng-click="removeProduct(item.title)" ng-show="isSignIn == true" href="#" class="btn btn-danger btn-block"> Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer-copyright text-center py-3">© 2021 Copyright:
+        <a href="index.html"> Moldova currency</a>
+    </div>
+    </footer>
+
+    <div id="myModal1" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close1">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h2 class="text-center text-uppercase font-weight-bold">Sign in</h2> <br>
+                <form ng-submit="signIn()">
+                    <!-- ng-submit -->
+                    <h2 class="text-center">Login</h2>
+                    <input ng-model="inputLogin" class="form-control" type="text"> <br>
+
+                    <h2 class="text-center">Password</h2>
+                    <input ng-model="inputPass" class="form-control" type="password"> <br>
+
+                    <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in"> <br>
+                    <input class="btn btn-danger btn-lg btn-block" type="reset" value="Reset"><br> <br>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="myModal2" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close2">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h2 class="text-center text-uppercase font-weight-bold">Конвертер валют</h2> <br>
+                <div class="values">
+                    <div class="exchange1">
+                        MDL: <input type="number" ng-model="mdlTOdol">
+                    DOLLARS: <span ng-init="mdlTOdol = 0">{{mdlTOdol / 18}}</span>
+                                    <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange2">
+                        DOLLARS: <input type="number" ng-model="dolTOmdl">
+                    MDL: <span ng-init="dolTOmdl = 0">{{dolTOmdl * 18}}</span>
+                                <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange3">
+                        MDL: <input type="number" ng-model="mdlTOeu">
+                    EURO: <span ng-init="mdlTOeu = 0">{{mdlTOeu / 20}}</span>
+                                <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange4">
+                        EURO: <input type="number" ng-model="euTOmdl">
+                    MDL: <span ng-init="euTOmdl = 0">{{euTOmdl * 20}}</span>
+                                <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange5">
+                        EURO: <input type="number" ng-model="euTOdol">
+                    DOLLARS: <span ng-init="euTOdol = 0">{{euTOdol * 1.1}}</span>
+                                        <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange6">
+                        DOLLARS: <input type="number" ng-model="dolTOeu">
+                    EURO: <span ng-init="dolTOeu = 0">{{dolTOeu / 1.1}}</span>
+                                        <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange7">
+                        MDL: <input type="number" ng-model="mdlTOrub">
+                    RUB: <span ng-init="mdlTOrub = 0">{{mdlTOrub * 3.96}}</span>
+                                        <!-- ng-init -->
+                    </div>
+                    <hr>
+                    <div class="exchange8">
+                        RUB: <input type="number" ng-model="rubTOmdl">
+                    MDL: <span ng-init="rubTOmdl = 0">{{rubTOmdl / 3.96}}</span>
+                                        <!-- ng-init -->
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/modalView.js"></script>
+    <script src="js/myApp.js"></script>
+    <script src="js/exchangesCtrl.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Contacts</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body ng-app="myApp" ng-controller="exchangesCtrl"></body>
+<!-- ng-app -->
+<header>
+    <div class="wrapper container">
+        <nav class="navbar navbar-expand-lg row">
+            <a class="navbar-brand col-xs-2" href="index.html">
+               
+            </a>
+
+            <nav class="two">
+                <ul>
+                    <li><a href="index.html"><i class="fa fa-home fa-fw"></i>Main</a></li>
+                    <li><a href="aboutUs.html">About</a></li>
+                    <li><a href="exchanges.html">Currency</a></li>
+                    <li><a href="contacts.html">Contacts</a></li>
+                    <li ng-show="isSignIn == false">
+                        <button id="myBtn">Sign in</button>
+                    </li>
+                    <li ng-show="isSignIn == true">
+                        <button class="btn-success">Hi, {{login | uppercase}}</button>
+                    </li>
+                    <li ng-show="isSignIn == true">
+                        <button class="btn-danger" ng-click="isSignIn = false">Exit</button>
+                                                    <!-- ng-click -->
+                    </li>
+                </ul>
+            </nav>
+
+        </nav>
+    </div>
+</header>
+
+
+<div class="container" style="background-color: #39e948;" ng-app="myApp" ng-controller="questionCtrl" ng-init="showNoBtn=true; showAnswer=false; showForm=true;">
+                                                                                                            <!-- ng-init -->
+
+    <h1 class="text-center text-uppercase font-weight-bold mt-5 mb-5">ASK YOUR QUESTION</h1>
+
+    <form name="myForm" novalidate ng-submit="showAnswer=true;">
+        <!-- ng-submit -->
+
+        <p>Your name:<br>
+            <input class="form-control" type="text" name="user" ng-model="username" required>
+            <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                        <span ng-show="myForm.user.$error.required">Username is required.</span>
+            </span>
+        </p>
+
+        <p>Email:<br>
+            <input class="form-control" type="email" name="email" ng-model="email" required ng-focus="count1++" ng-init="count1=0">
+                                                                                        <!--ng-focus              ng-init -->
+            <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+                        <span ng-show="myForm.email.$error.required">Email is required.</span>
+            <span ng-show="myForm.email.$error.email">Invalid email address.</span>
+            <!-- validate input -->
+            </span>
+        </p>
+
+        <p>Age: <br>
+            <input class="form-control" type="number" ng-model="userAge" ng-init="userAge=0;" ng-click="count2++" ng-init="count2=0">
+                                                                            <!-- ng-init                                ng-init -->
+            <span class="text-info small">{{userAge | myFilterAge}}</span>
+        </p>
+
+        <p>Choose the question type:</p>
+        <select class="form-control" ng-model="qType">
+                    <option ng-repeat="x in typeOfQuestions">{{x}}</option>
+                </select> <br>
+
+        <p>Describe your problem:</p>
+        <textarea class="form-control" rows="5" ng-model="description"></textarea>
+        <br>
+
+        <p>Do you like our service?</p>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+            <label class="form-check-label" for="exampleRadios1">
+                        YES
+                    </label>
+        </div>
+        <div class="form-check" ng-show="showNoBtn">
+            <input ng-mouseover="showNoBtn=false;" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+            <label class="form-check-label" for="exampleRadios2">
+                        NO
+                    </label>
+        </div> <br>
+
+        <p>
+            <input class="btn btn-primary" type="submit" ng-click="showAnswer=true;" ng-if="!myForm.$invalid" ng-disabled="myForm.email.$error.required && !myForm.description.$invalid">
+                                                                                <!--  ng-if                   ng-disabled  -->
+        </p>
+    </form>
+
+    <div ng-show="showAnswer==true">
+        <h3 class="text-center text-success">Now we see your question</h3>
+    </div>
+
+
+    
+    <div class="container">
+        <h3 class="text-center text-uppercase font-weight-bold mt-5 mb-5">Our contacts</h3>
+            <div class="col-sm-4" id="contact2">
+                <h3>Contacts</h3>
+                <hr allign="left" width="50%">
+                <h4 class="pt-2">Address</h4>
+                <i class="fa fa-globe" style="color:#000"></i> Chisinau, bd. Moscova 100/1
+                <br>
+                <h4 class="pt-2">Phones</h4>
+                <i class="fa fa-phone" style="color:#000"></i> <a href="tel:+"> (+373) 7493759 ;  </a><br>
+                <i class="fa fa-whatsapp" style="color:#000"></i><a href="tel:+"> (+373) 85038684 ; </a><br>
+                <h4 class="pt-2">Email</h4>
+                <i class="fa fa-envelope" style="color:#000"></i> <a href="">currency@mail.ru</a><br>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+<footer>
+    
+
+</footer>
+
+
+
+<div class="footer-copyright text-center py-3">© 2021 Copyright:
+    <a href="index.html"> Moldova </a>
+</div>
+<div id="myModal1" class="modal">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close1">&times;</span>
+        </div>
+        <div class="modal-body">
+            <h2 class="text-center text-uppercase font-weight-bold">Sign in</h2> <br>
+            <form ng-submit="signIn()">
+                <!-- ng-submit -->
+                <h2 class="text-center">Login</h2>
+                <input ng-model="inputLogin" class="form-control" type="text"> <br>
+
+                <h2 class="text-center">Password</h2>
+                <input ng-model="inputPass" class="form-control" type="password"> <br>
+
+                <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign in"> <br>
+                <input class="btn btn-danger btn-lg btn-block" type="reset" value="Reset"><br> <br>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script src="js/myApp.js"></script>
+<script src="js/questionCtrl.js"></script>
+<script src="js/modalView.js"></script>
+<script src="js/exchangesCtrl.js"></script>
+</body>
+
+</html>
